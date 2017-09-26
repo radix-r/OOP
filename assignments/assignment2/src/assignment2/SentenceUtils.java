@@ -6,6 +6,12 @@
 package assignment2;
 
 import java.util.ArrayList;
+import java.util.Scanner;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  * @author Ross Wanger
  * pid: 3301656
@@ -79,8 +85,6 @@ public class SentenceUtils {
                 }
             }
         }
-            
-        
     }
     
     /**
@@ -89,22 +93,51 @@ public class SentenceUtils {
      * @param args string to be tokenized
      */
     public static void main(String[] args){
-      //String test = "the quick brown fox jumps over the lazy dog";
-      String test = "object oriented";
-      SentenceUtils sentence = new SentenceUtils(4);
-      // number of letter groups
-      int size;
+      
+      // get user input from command line
+      // must be two command line arguements 
+      if (args.length != 2){
+        System.out.println("Usage: java assignment2.SentenceUtils <Text.txt> <letter group size>");
+        // prevent the program from going further
+        return;
+      }
+      /*How should I order these?*/
+      // args[0] should be the name of the text file
+      String fileName = args[0];
+      //args[1] should be an int, the number of letters per group
+      int letterGroupLen = Integer.parseInt(args[1]);
+      // string to put the text file into
+      String text = "";
+      // object for creating letter groups
+      SentenceUtils sentence = new SentenceUtils(letterGroupLen);
+      // histogram object for generating the histogram
+      Histogram hist = new Histogram();
       // array that the letter groups will be put into
       String[] letterGroups;
-              
-      String[] words = sentence.getTokens(test);
-      sentence.splitTokenstoLetterGroups(words);
-      size = sentence.getLetterGroups().size();
-      letterGroups = new String[size];
-      sentence.getLetterGroups().toArray(letterGroups);
+      // array of words tokenized form the text file bases on spaces
+      String[] words; 
       
-      for(String group:letterGroups){
-          System.out.println(group);
+      try {
+        File file = new File(fileName);
+        Scanner sc = new Scanner(new FileInputStream(file));
+        
+        // read from text file
+        while(sc.hasNext()){
+          text += sc.nextLine() + " ";
+        }
+        
+      } catch (FileNotFoundException ex) {
+        Logger.getLogger(SentenceUtils.class.getName()).log(Level.SEVERE, null, ex);
+        System.out.println("File: "+fileName+" not found");
+        return;
       }
+       
+      words = sentence.getTokens(text);
+      // split words into letter groups
+      sentence.splitTokenstoLetterGroups(words);
+      // generate the histogram
+      hist.generateHistogram(sentence.getLetterGroups());
+      // print the histogram
+      hist.printHistogram();
     }
 }

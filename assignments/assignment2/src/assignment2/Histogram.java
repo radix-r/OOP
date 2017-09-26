@@ -8,6 +8,7 @@ package assignment2;
 import java.util.ArrayList;
 
 import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -18,6 +19,7 @@ public class Histogram {
   
   private HashMap<String, Integer> mHistogram;
   
+  // constructor
   public Histogram(){
     // initalize mHistogram
     this.mHistogram = new HashMap<>();
@@ -62,13 +64,13 @@ public class Histogram {
   
   */
   public void printHistogram(){
-    for (HashMap.Entry<String, Integer> pair : this.mHistogram.entrySet()) {
+    for (Map.Entry<String, Integer> pair : this.mHistogram.entrySet()) {
       int intVal = pair.getValue();
       System.out.print(pair.getKey() + ": ");
       printNtimes('*',intVal);
-      System.out.println('\n');
+      System.out.println();
     }
-    
+    System.out.println();
   }
   /*
     A helper function that will print a given char n times
@@ -81,7 +83,7 @@ public class Histogram {
     
     /**
      * unit testing
-   * @param args command line arguements 
+     * @param args command line arguments 
      */
     public static void main(String[] args){
       
