@@ -12,8 +12,10 @@ import java.util.Map;
 
 
 /**
- *
- * @author rwagner
+ * @author Ross Wanger
+ * pid: 3301656
+ * nid: ro520462
+ * 
  */
 public class Histogram {
   

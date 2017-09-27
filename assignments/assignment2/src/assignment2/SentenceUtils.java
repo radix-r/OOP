@@ -79,6 +79,8 @@ public class SentenceUtils {
             int length = token.length();
             for(int j = 0; (j+ this.mLetterGroupLen) <= length ;j++ ){
                 String subStr = token.substring(j,j+this.mLetterGroupLen);
+                // convert to lower case
+                subStr = subStr.toLowerCase();
                 boolean add = this.mLetterGroups.add(subStr);
                 if(!add){
                     // throw an error?
@@ -97,7 +99,7 @@ public class SentenceUtils {
       // get user input from command line
       // must be two command line arguements 
       if (args.length != 2){
-        System.out.println("Usage: java assignment2.SentenceUtils <Text.txt> <letter group size>");
+        System.out.println("Usage: java -jar assignment2.jar <Text.txt> <letter group size(int)>");
         // prevent the program from going further
         return;
       }
@@ -105,17 +107,25 @@ public class SentenceUtils {
       // args[0] should be the name of the text file
       String fileName = args[0];
       //args[1] should be an int, the number of letters per group
-      int letterGroupLen = Integer.parseInt(args[1]);
+      int letterGroupLen;
       // string to put the text file into
       String text = "";
       // object for creating letter groups
-      SentenceUtils sentence = new SentenceUtils(letterGroupLen);
+      SentenceUtils sentence;
       // histogram object for generating the histogram
-      Histogram hist = new Histogram();
+      Histogram hist;
       // array that the letter groups will be put into
       String[] letterGroups;
       // array of words tokenized form the text file bases on spaces
       String[] words; 
+      
+      try{
+        letterGroupLen = Integer.parseInt(args[1]);
+        
+      }catch(NumberFormatException numEx){
+        System.out.println("Usage: java -jar assignment2.jar <Text.txt> <letter group size(int)>");
+        return;
+      }
       
       try {
         File file = new File(fileName);
@@ -125,13 +135,14 @@ public class SentenceUtils {
         while(sc.hasNext()){
           text += sc.nextLine() + " ";
         }
-        
-      } catch (FileNotFoundException ex) {
+      }catch (FileNotFoundException ex) {
         Logger.getLogger(SentenceUtils.class.getName()).log(Level.SEVERE, null, ex);
         System.out.println("File: "+fileName+" not found");
         return;
       }
-       
+      
+      sentence = new SentenceUtils(letterGroupLen);
+      hist = new Histogram();
       words = sentence.getTokens(text);
       // split words into letter groups
       sentence.splitTokenstoLetterGroups(words);
