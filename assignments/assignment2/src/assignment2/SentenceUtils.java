@@ -58,7 +58,7 @@ public class SentenceUtils {
     output: ["object", "oriented"]
     */
     private String[] getTokens(String line){
-        String[] words = line.split("\\s");
+        String[] words = line.split("\\P{Alpha}+");
         return words;
     }
     /*
